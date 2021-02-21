@@ -8,9 +8,9 @@
     <artifactId>dashboard</artifactId>
     <version>1.0.0</version>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <name>dashboard</name>
+    <url>http://www.iocoder.cn</url>
+    <description>芋道管理系统</description>
     <packaging>jar</packaging>
 
     <properties>
@@ -23,24 +23,8 @@
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <!-- 统一依赖管理 -->
         <spring.boot.version>2.4.2</spring.boot.version>
-
-<!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
-<!--        <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>-->
-<!--        <druid.version>1.2.2</druid.version>-->
-<!--        <bitwalker.version>1.21</bitwalker.version>-->
-<!--        <swagger.version>2.9.2</swagger.version>-->
-<!--		<kaptcha.version>2.3.2</kaptcha.version>-->
-<!--        <pagehelper.boot.version>1.3.0</pagehelper.boot.version>-->
-<!--        <oshi.version>5.3.6</oshi.version>-->
-<!--        <jna.version>5.6.0</jna.version>-->
-<!--        <commons.io.version>2.5</commons.io.version>-->
-<!--        <commons.fileupload.version>1.3.3</commons.fileupload.version>-->
-<!--        <poi.version>4.1.2</poi.version>-->
-<!--        <velocity.version>1.7</velocity.version>-->
-
         <!-- Web 相关 -->
         <knife4j.version>3.0.2</knife4j.version>
-
         <!-- DB 相关 -->
         <mysql-connector-java.version>5.1.46</mysql-connector-java.version>
         <druid.version>1.2.4</druid.version>
@@ -55,19 +39,12 @@
         <hutool.version>5.5.6</hutool.version>
         <easyexcel.verion>2.2.7</easyexcel.verion>
         <velocity.version>2.2</velocity.version>
+        <screw.version>1.0.5</screw.version>
     </properties>
 
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-
-<!--            &lt;!&ndash;velocity代码生成使用模板 &ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.velocity</groupId>-->
-<!--                <artifactId>velocity</artifactId>-->
-<!--                <version>${velocity.version}</version>-->
-<!--            </dependency>-->
-
             <!-- 统一依赖管理 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -190,12 +167,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
             <version>${mapstruct.version}</version>
@@ -221,6 +192,11 @@
             <artifactId>hutool-captcha</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-http</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -234,45 +210,59 @@
             <version>${velocity.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.smallbun.screw</groupId>
+            <artifactId>screw-core</artifactId>
+            <version>${screw.version}</version>
+        </dependency>
+
     </dependencies>
 
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <!-- 提供给 mapstruct 使用 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source> <!-- or higher, depending on your project -->
-                        <target>${java.version}</target> <!-- or higher, depending on your project -->
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>${mapstruct.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                    </configuration>
-                </plugin>
+        <!-- 设置构建的 jar 包名 -->
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <!-- 打包 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal> <!-- 将原来的 jar 打入其中 -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-                <!-- 打包 -->
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <fork>true</fork>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+            <!-- 提供给 mapstruct 使用 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source> <!-- or higher, depending on your project -->
+                    <target>${java.version}</target> <!-- or higher, depending on your project -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
