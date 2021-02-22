@@ -87,6 +87,7 @@ apollo:
 management:
   endpoints:
     web:
+      base-path: /actuator # Actuator 提供的 API 接口的根目录。默认为 /actuator
       exposure:
         include: '*' # 需要开放的端点。默认值只打开 health 和 info 两个端点。通过设置 * ，可以开放所有端点。
 
@@ -97,6 +98,8 @@ spring:
       # Spring Boot Admin Client 客户端的相关配置
       client:
         url: http://127.0.0.1:${server.port}/${spring.boot.admin.context-path} # 设置 Spring Boot Admin Server 地址
+        instance:
+          prefer-ip: true # 注册实例时，优先使用 IP
       # Spring Boot Admin Server 服务端的相关配置
       context-path: /admin # 配置 Spring
 
@@ -131,3 +134,8 @@ yudao:
   codegen:
     base-package: ${yudao.info.base-package}.modules
     db-schemas: ${spring.datasource.name}
+  xss:
+    enable: true
+    exclude-urls: # 如下两个 url，仅仅是为了演示，去掉配置也没关系
+      - ${spring.boot.admin.context-path}/** # 不处理 Spring Boot Admin 的请求
+      - ${management.endpoints.web.base-path}/** # 不处理 Actuator 的请求
