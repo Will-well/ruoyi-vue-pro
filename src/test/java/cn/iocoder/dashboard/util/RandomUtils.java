@@ -2,8 +2,7 @@ package cn.iocoder.dashboard.util;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.iocoder.dashboard.modules.infra.controller.config.vo.InfConfigCreateReqVO;
-import cn.iocoder.dashboard.modules.infra.dal.dataobject.config.InfConfigDO;
+import cn.iocoder.dashboard.common.enums.CommonStatusEnum;
 import cn.iocoder.dashboard.modules.system.dal.dataobject.user.SysUserDO;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -48,7 +47,7 @@ public class RandomUtils {
         return RandomUtil.randomString(RANDOM_STRING_LENGTH);
     }
 
-    public static Long randomLong() {
+    public static Long randomLongId() {
         return RandomUtil.randomLong(0, Long.MAX_VALUE);
     }
 
@@ -69,23 +68,17 @@ public class RandomUtils {
                 .map(i -> randomPojo(clazz)).collect(Collectors.toSet());
     }
 
+    public static Integer randomCommonStatus() {
+        return RandomUtil.randomEle(CommonStatusEnum.values()).getStatus();
+    }
+
     @SafeVarargs
     public static SysUserDO randomUserDO(Consumer<SysUserDO>... consumers) {
         return randomPojo(SysUserDO.class, consumers);
     }
 
     @SafeVarargs
-    public static InfConfigCreateReqVO randomInfConfigCreateReqVO(Consumer<InfConfigCreateReqVO>... consumers) {
-        return randomPojo(InfConfigCreateReqVO.class, consumers);
-    }
-
-    @SafeVarargs
-    public static InfConfigDO randomInfConfigDO(Consumer<InfConfigDO>... consumers) {
-        return randomPojo(InfConfigDO.class, consumers);
-    }
-
-    @SafeVarargs
-    private static <T> T randomPojo(Class<T> clazz, Consumer<T>... consumers) {
+    public static <T> T randomPojo(Class<T> clazz, Consumer<T>... consumers) {
         T pojo = PODAM_FACTORY.manufacturePojo(clazz);
         // 非空时，回调逻辑。通过它，可以实现 Pojo 的进一步处理
         if (ArrayUtil.isNotEmpty(consumers)) {
