@@ -163,4 +163,14 @@ public interface ErrorCodeConstants {
     // ========== 站内信发送 1002028000 ==========
     ErrorCode NOTIFY_SEND_TEMPLATE_PARAM_MISS = new ErrorCode(1002028000, "模板参数({})缺失");
 
+    // ========== 学校 1002029000 ==========
+    ErrorCode UNIVERSITY_NOT_EXISTS = new ErrorCode(1002029000, "学校不存在");
+    // ========== 专业 1002030000 ==========
+    ErrorCode MAJOR_NOT_EXISTS = new ErrorCode(1002030000, "专业不存在");
+    // ========== 资讯 1002031000 ==========
+    ErrorCode INFORMATION_NOT_EXISTS = new ErrorCode(1002031000, "资讯不存在");
+    // ========== wx用户 1002032000 ==========
+    ErrorCode WX_USER_NOT_EXISTS = new ErrorCode(1002032000, "wx用户不存在");
+    // ========== 用户咨询 1002033000 ==========
+    ErrorCode CONSULTATION_NOT_EXISTS = new ErrorCode(1002033000, "用户咨询不存在");
 }

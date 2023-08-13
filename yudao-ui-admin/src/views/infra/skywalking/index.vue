@@ -1,6 +1,6 @@
 <template>
   <div>
-    <doc-alert title="服务监控" url="https://doc.iocoder.cn/server-monitor/" />
+
     <i-frame v-if="!loading" :src="url" />
   </div>
 </template>
